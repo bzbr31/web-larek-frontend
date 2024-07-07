@@ -11,33 +11,36 @@ export interface IBusket {
 	id: string;
 	price: number | null;
 	title: string;
+	quantity: number;
 }
 
 export interface IContacts {
 	address: string;
 	mail: string;
-	phone: number;
+	phone: string;
 }
 
 export interface ICardsData {
 	cards: ICard[];
 	preview: string | null;
-	buyCard(cardId: string, payload: Function | null): void;
 	getCard(cardId: string): ICard;
 	updateBusket(): IBusket[];
 }
 
 export interface IBusketData {
 	busket: IBusket[];
-	deleteCard(cardId: string, payload: Function | null): void;
-	summPrice(price: number, payload: Function | null): void;
+	addToBasket(cardId: string, quantity: number): void;
+	removeFromBasket(cardId: string, quantity?: number): void;
+	getTotalPrice(): number;
+	clearBasket(): void;
 }
 
 export interface IContactsData {
-	checkAddressValidation(data: Record<keyof TAddress, string>): boolean;
-	checkCommunicationValidation(
-		data: Record<keyof TCommunication, string | number>
-	): boolean;
+	checkAddressValidation(data: Record<'address', string>): boolean;
+	checkCommunicationValidation(data: Record<'mail' | 'phone', string>): boolean;
+	getContacts(): IContacts;
+	setContacts(contacts: IContacts): void;
+	clearContacts(): void;
 }
 
 export type TProduct = Pick<

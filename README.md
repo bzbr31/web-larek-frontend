@@ -67,6 +67,7 @@ export interface IBusket {
     id: string;
     price: number | null;
     title: string;
+    quantity: number;
 }
 ```
 
@@ -150,7 +151,6 @@ export type TCommunication = Pick<IContacts, 'mail' | 'phone'>
 
 Так же класс предоставляет набор методов для взаимодействия с этими данными.
 
-- buyCard(cardId: string, payload: Function | null): void; - внесение карточки в корзину
 - getCard(cardId: string): ICard; - возвращает карточку по ее id
 - updateBusket(): IBusket[]; - обновление массива корзины
 - а так-же сеттеры и геттеры для сохранения и получения данных из полей класса
@@ -166,9 +166,10 @@ export type TCommunication = Pick<IContacts, 'mail' | 'phone'>
 
 Так же класс предоставляет набор методов для взаимодействия с этими данными.
 
-- deleteCard(cardId: string, payload: Function | null): void; - удаляет карточку из массива корзины
-- summPrice(price: number, payload: Function | null): void; - суммирует полную стоимость карточек в корзине
-- а так-же сеттеры и геттеры для сохранения и получения данных из полей класса
+- addToBasket(cardId: string, quantity: number): void;
+- removeFromBasket(cardId: string, quantity?: number): void;
+- getTotalPrice(): number;
+- clearBasket(): void;
 
 #### Класс ContactsData
 
@@ -180,8 +181,11 @@ export type TCommunication = Pick<IContacts, 'mail' | 'phone'>
 
 Так же класс предоставляет набор методов для взаимодействия с этими данными.
 
-- checkAddressValidation(data: Record<keyof TAddress, string>): boolean; - проверяет объект с данными на валидность
-- checkCommunicationValidation(data: Record<keyof TCommunication, string | number>): boolean; - проверяет объект с данными на валидность
+- checkAddressValidation(data: Record<'address', string>): boolean;
+- checkCommunicationValidation(data: Record<'mail' | 'phone', string>): boolean;
+- getContacts(): IContacts;
+- setContacts(contacts: IContacts): void;
+- clearContacts(): void;
 
 ### Класс представления
 
