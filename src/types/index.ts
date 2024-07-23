@@ -1,53 +1,85 @@
-export interface ICard {
-	id: string;
-	description: string;
-	image: string;
-	title: string;
-	category: string;
-	price: number | null;
+export type ApiListResponse<Type> = {
+	total: number;
+	items: Type[];
+};
+
+export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
+
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+
+export type PaymentMethod = 'cash' | 'online';
+
+export type OrderForm = Omit<IOrder, 'total' | 'items'>;
+
+export type CardId = Omit<IProduct, 'id'>;
+
+export interface IFormState {
+	valid: boolean;
+	errors: string[];
 }
 
-export interface IBusket {
-	id: string;
-	price: number | null;
-	title: string;
-	quantity: number;
+export interface IEvents {
+	on<T extends object>(event: string, callback: (data: T) => void): void;
+	emit<T extends object>(event: string, data?: T): void;
+	trigger<T extends object>(
+		event: string,
+		context?: Partial<T>
+	): (data: T) => void;
 }
 
-export interface IContacts {
+export interface IPaymentForm {
+	payment: PaymentMethod;
 	address: string;
-	mail: string;
+}
+export interface IContactsForm {
+	email: string;
 	phone: string;
 }
 
-export interface ICardsData {
-	cards: ICard[];
-	preview: string | null;
-	getCard(cardId: string): ICard;
-	updateBusket(): IBusket[];
+export interface IOrder extends IPaymentForm, IContactsForm {
+	items: string[];
+	total: number;
 }
 
-export interface IBusketData {
-	busket: IBusket[];
-	addToBasket(cardId: string, quantity: number): void;
-	removeFromBasket(cardId: string, quantity?: number): void;
-	getTotalPrice(): number;
-	clearBasket(): void;
+export interface IBasket {
+	items: string[];
+	total: number;
 }
 
-export interface IContactsData {
-	checkAddressValidation(data: Record<'address', string>): boolean;
-	checkCommunicationValidation(data: Record<'mail' | 'phone', string>): boolean;
-	getContacts(): IContacts;
-	setContacts(contacts: IContacts): void;
-	clearContacts(): void;
+export interface IProduct {
+	id: string;
+	title: string;
+	description: string;
+	category: string;
+	image: string;
+	price: number | null;
 }
 
-export type TProduct = Pick<
-	ICard,
-	'id' | 'image' | 'title' | 'price' | 'category'
->;
+export interface IOrderResult {
+	id: string;
+	total: number | null;
+}
 
-export type TAddress = Pick<IContacts, 'address'>;
+export interface ISuccess {
+	total: number;
+}
 
-export type TCommunication = Pick<IContacts, 'mail' | 'phone'>;
+export interface IActions {
+	onClick: () => void;
+}
+
+export interface IModal {
+	content: HTMLElement;
+}
+
+export interface ILarekAPI {
+	getProductList: () => Promise<IProduct[]>;
+	getProductItem: (id: string) => Promise<IProduct>;
+	orderProducts: (order: IOrder) => Promise<IOrderResult>;
+}
+
+export interface IPage {
+	catalog: HTMLElement[];
+	counter: number;
+	locked: boolean;
+}
