@@ -1,1 +1,1 @@
- https://bzbr31.github.io/web-larek-frontend
+ https://bzbr31.github.io/web-larek-frontend/
